@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>多模态翻译助手</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; }
+    .container { display: flex; gap: 20px; height: 100vh; }
+    
+    /* 左侧配置栏 */
+    .sidebar { width: 300px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 15px; }
+    .sidebar h3 { margin: 0 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    label { font-size: 14px; color: #666; }
+    input, select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    input:focus { border-color: #007bff; outline: none; }
+
+    /* 右侧工作区 */
+    .workspace { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .panel { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); flex: 1; display: flex; flex-direction: column; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    
+    textarea { flex: 1; resize: none; border: 1px solid #ddd; padding: 10px; border-radius: 4px; font-size: 15px; line-height: 1.6; }
+    
+    .image-preview { width: 100%; height: 150px; border: 2px dashed #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #999; margin-top: 10px; overflow: hidden; background-size: contain; background-repeat: no-repeat; background-position: center; }
+    
+    button { background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.3s; }
+    button:hover { background-color: #0056b3; }
+    button:disabled { background-color: #ccc; cursor: not-allowed; }
+    
+    #resultBox { background-color: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 左侧配置 -->
+    <div class="sidebar">
+      <h3>API 配置</h3>
+      <div class="form-group">
+        <label>API Key</label>
+        <input type="password" id="apiKey" placeholder="sk-..." />
+      </div>
+      <div class="form-group">
+        <label>Base URL(若URL包含"/chat/completions"请删除)</label>
+        <input type="text" id="baseURL" placeholder="https://open.bigmodel.cn/api/paas/v4" value="https://open.bigmodel.cn/api/paas/v4" />
+      </div>
+      <div class="form-group">
+        <label>模型名称</label>
+        <input type="text" id="modelName" placeholder="glm-4.6v-flash" value="glm-4.6v-flash" />
+      </div>
+      <div class="form-group">
+        <label>目标语言</label>
+        <select id="targetLang">
+          <option value="英语">英语</option>
+          <option value="中文">中文</option>
+          <option value="日语">日语</option>
+          <option value="法语">法语</option>
+          <option value="德语">德语</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>截图操作</label>
+        <button onclick="pasteImage()">粘贴截图 (Ctrl+V)</button>
+        <button onclick="clearImage()" style="background-color: #6c757d; margin-top:5px;">清除图片</button>
+      </div>
+    </div>
+
+    <!-- 右侧主区域 -->
+    <div class="workspace">
+      <!-- 输入区 -->
+      <div class="panel">
+        <div class="panel-header">
+          <span>输入文本或截图</span>
+          <button id="translateBtn" onclick="startTranslate()">开始翻译</button>
+        </div>
+        <textarea id="inputText" placeholder="在这里输入要翻译的文本..."></textarea>
+        <div id="imagePreview" class="image-preview">在此处粘贴截图</div>
+      </div>
+
+      <!-- 结果区 -->
+      <div class="panel" id="resultBox">
+        <div class="panel-header">
+          <span>翻译结果</span>
+        </div>
+        <textarea id="outputText" readonly placeholder="翻译结果将显示在这里..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
