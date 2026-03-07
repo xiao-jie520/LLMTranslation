@@ -86,14 +86,20 @@
 
 项目结构
 
-
 llmtranslation/
+
 ├── package.json          # 项目配置和依赖声明
+
 ├── package-lock.json     # 依赖树锁定文件
+
 ├── main.js              # Electron 主进程文件，处理窗口创建、IPC
+
 ├── preload.js           # 预加载脚本，安全暴露 API 给渲染进程
+
 ├── renderer.js          # 渲染进程逻辑，处理界面交互
+
 ├── index.html           # 应用程序主界面
+
 └── README.md            # 本说明文件
 
 
@@ -134,3 +140,4 @@ llmtranslation/
 •   主进程逻辑在 main.js 中，渲染进程逻辑在 renderer.js 中。
 
 提示：本文档内容基于您提供的项目文件 (package.json, main.js, renderer.js 等) 生成。在使用 API 时产生的费用及服务质量，由对应的 API 提供商负责。
+
